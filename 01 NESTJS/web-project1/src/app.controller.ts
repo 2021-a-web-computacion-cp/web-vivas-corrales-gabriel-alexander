@@ -1,9 +1,15 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Get,
+  Header,
+  Headers,
   HttpCode,
   InternalServerErrorException,
+  Param,
+  Post,
+  Query,
   Req,
   Res,
 } from '@nestjs/common';
@@ -50,16 +56,40 @@ export class AppController {
   ) {
     //nombre            valor
     res.cookie('cookieInsegura', 'esto esta inseguro oe');
-    res.cookie('cookieSegura', 'esto esta seguro :)', { secure: true });
+    res.cookie('cookieSegura', 'esto esta seguro :)', {
+      secure: true, //solo se transfieren por canales confiables https
+      signed: true, // Encriptación
+    });
     res.send('ok');
   }
+
+  //req.signedCookies.total existe= tonces restamos
   @Get('mostrar-cookies')
   mostrarCookies(@Req() req) {
-    const mensaje = {
+    return {
       sinFirmar: req.cookies,
       firmadas: req.signedCookies,
     };
-    return mensaje;
+  }
+
+  @Get('parametros-consulta/:nombre/:otroParametro')
+  @HttpCode(200)
+  @Header('Cache-control', 'none') //Cabeceras de respuesta (response headers)
+  @Header('EPN', 'Sistenas') //Cabeceras de respuesta (response headers)
+  parametrosConsulta(@Query() queryParams, @Param() params) {
+    return {
+      parametrosConsilta: queryParams,
+      parametrosRuta: params,
+    };
+  }
+
+  @Post('parametros-Cuerpo') //201 Creado ( Por Defecto)
+  @HttpCode(200)
+  parametrosCuerpo(@Body() bodyParams, @Headers() cabecerasPeticion) {
+    return {
+      parametrosCuerpo: bodyParams,
+      cabeceras: cabecerasPeticion,
+    };
   }
 }
 
