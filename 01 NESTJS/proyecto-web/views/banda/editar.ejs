@@ -1,0 +1,45 @@
+<%- include('../comunes/cabecera') %>
+<div class='container'>
+    <% const existeMensaje = typeof banda !== 'undefined'%>
+    <% if(existeMensaje){%>
+    <ul>
+        <li><a  href= '/banda/lista-bandas'> Regresar a Lista de Bandas</a></li>
+    </ul>
+    <h1 style="text-align:center">Editar Banda</h1>
+    <form action="/banda/editar-banda-formulario" method="post">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre*</label>
+            <input placeholder="Ej: Biruls" type="text" name="nombre" class="form-control" id="nombre"  value="<%=banda.nombre%>" aria-describedby="ayudaNombre">
+            <div id="ayudaNombre" class="form-text">Ingrese Nombre</div>
+        </div>
+        <div class="mb-3">
+            <label for="anio" class="form-label">Año Creacion*</label>
+            <input placeholder="Ej: 1984" type="number" name="anio" class="form-control" id="anio"  min="1901" max="2021" value="<%=banda.anio_creacion%>" aria-describedby="ayudaAnio">
+            <div id="ayudaAnio" class="form-text">Ingrese Año de Creacion</div>
+        </div>
+        <div class="mb-3">
+            <label for="integrantes" class="form-label">Numero Integrantes*</label>
+            <input placeholder="Ej: 5" type="number" name="integrantes" class="form-control" id="integrantes"  min="1"  value="<%=banda.num_integrantes%>" aria-describedby="ayudaIntegrantes">
+            <div id="ayudaIntegrantes" class="form-text">Ingrese Numero de Integrantes</div>
+        </div>
+        <div class="mb-3">
+            <label for="activa" class="form-label">Banda Activa*</label>
+            <select id="activa" name="activa">
+                <option value="true">Si</option>
+                <option value="false">No</option>
+            </select>
+            <div id="ayudaIntegrantes" class="form-text">Seleccione si la banda se encuentra activa</div>
+        </div>
+        <div class="mb-3">
+            <label for="genero" class="form-label">Genero*</label>
+            <input placeholder="Ej: Rock" type="text" name="genero" class="form-control" id="genero" value="<%=banda.genero%>" aria-describedby="ayudaGenero">
+            <div id="ayudaGenero" class="form-text">Ingrese Genero</div>
+        </div>
+
+        <input type="hidden" id="idBanda" name="bandaId" value="<%=banda.id%>">
+
+        <button type="submit" class="btn btn-warning w-100">Guardar Cambios</button>
+    </form>
+</div>
+<%}%>
+<%- include('../comunes/footer') %>
