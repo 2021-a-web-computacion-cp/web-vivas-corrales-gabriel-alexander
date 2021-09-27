@@ -17,12 +17,6 @@ import { BandaConsultarMuchosDto } from './dto/bandaConsultarMuchos.dto';
 @Controller('banda')
 export class BandaController {
   constructor(private bandaService: BandaService) {}
-  /*
-  @Get(':idUsuario')
-  obtenerUno(@Param() params) {
-    return this.bandaService.buscarUno(+params.idUsuario);
-  }
-  */
 
   @Get('lista-bandas')
   async listarBndas(@Res() response, @Query() parametrosConsulta) {
@@ -59,16 +53,12 @@ export class BandaController {
     });
   }
 
-  @Get(':idBanda')
-  devolverUno(@Param() parametrosRuta){
-    return this.bandaService.buscarUno(+parametrosRuta.idBanda);
-  }
-
-
   @Get('vista-editar/:idBanda')
   async vistaEditar(@Res() response, @Param() parametrosRuta) {
     try {
-      const bandaAEditar = await this.bandaService.buscarUno(+parametrosRuta.idBanda);
+      const bandaAEditar = await this.bandaService.buscarUno(
+        +parametrosRuta.idBanda,
+      );
       response.render('banda/editar', {
         banda: bandaAEditar,
       });
@@ -157,6 +147,7 @@ export class BandaController {
     }
   }
 
+  /*
   @Post('crear')
   async crearUno(@Body() bodyParams) {
     const bandaCrearDto = new BandaCrearDto();
@@ -177,5 +168,5 @@ export class BandaController {
       console.error({ error: error, mensaje: 'Errores en crear banda' });
       throw new InternalServerErrorException('Error servidor');
     }
-  }
+  }*/
 }
