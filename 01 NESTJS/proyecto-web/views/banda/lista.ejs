@@ -1,0 +1,63 @@
+<%- include('../comunes/cabecera') %>
+<div class='container'>
+    <% const existeMensaje = typeof datos.mensaje !== 'undefined'%>
+    <% if(existeMensaje){%>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.mensaje%>
+        </div>
+    <%}%>
+    <h1>Lista de Bandas</h1>
+    <form action=" /banda/lista-bandas" method="get">
+        <div class="mb-3">
+            <label for="busqueda" class="form-label">BUSQUEDA </label>
+            <input placeholder="Ej: Beatles" type="text" name="busqueda" class="form-control" id="busqueda" aria-describedby="ayudaBusqueda">
+            <div id="ayudaBusqueda" class="form-text"> Puede buscar por Nombre de Banda o Genero. </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </form>
+    <div class="d-flex justify-content-end">
+        <a href="/banda/vista-crear">
+            <button class="btn btn-success btn-lg ">Crear Banda</button>
+        </a>
+    </div>
+    <table class="table text-center" >
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Año Creacion</th>
+            <th scope="col">Activa</th>
+            <th scope="col">N. Integrantes</th>
+            <th scope="col">Genero</th>
+            <th scope="col">Eliminar</th>
+            <th scope="col">Editar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% datos.bandas.forEach((objeto) => { %>
+            <tr>
+                <th><%= objeto.id %></th>
+                <th><%= objeto.nombre %></th>
+                <th><%= objeto.anio_creacion %></th>
+                <th><%= objeto.activa %></th>
+                <th><%= objeto.num_integrantes %></th>
+                <th><%= objeto.genero %></th>
+                <th>
+                    <form action="/banda/eliminar-banda/<%= objeto.id %>" method="post">
+                        <button class="btn btn-danger">Eliminar</button>
+                    </form>
+                </th>
+                <th>
+                    <a href="/banda/vista-editar/<%= objeto.id %>">
+                        <button class="btn btn-secondary">
+                            Editar
+                        </button>
+                    </a>
+                </th>
+            </tr>
+        <% } ) %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('../comunes/footer') %>

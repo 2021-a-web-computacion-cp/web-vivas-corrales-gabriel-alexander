@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:123456789@localhost:3010/web"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BANDA_MUSICAL{
+id                  Int         @id @default(autoincrement())
+nombre              String
+anio_creacion       Int          @db.Year
+activa              Boolean
+num_integrantes     Int
+genero              String
+
+}

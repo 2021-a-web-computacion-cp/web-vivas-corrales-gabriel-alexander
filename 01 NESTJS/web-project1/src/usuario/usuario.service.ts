@@ -1,12 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
+import { contains } from 'class-validator';
 @Injectable()
 export class UsuarioService {
   constructor(
     //inyectar dependencias)
     private prisma: PrismaService,
   ) {}
+
+  buscarMuchos(parametrosBusqueda: {
+    skip?: number; //Registros que te saltas
+    take?: number; //Registros que tomas
+    busqueda?: string; // Lo que el usuario busca
+    // orderBy?: Prisma.EPN_UsuarioOrder;
+  }) {
+    const or = parametrosBusqueda.busqueda
+      ? {
+          OR: [
+            { nombre: { contains: parametrosBusqueda.busqueda } },
+            { apellido: { contains: parametrosBusqueda.busqueda } },
+          ],
+        }
+      : {};
+    return this.prisma.ePN_USUARIO.findMany({
+      where: or,
+      take: Number(parametrosBusqueda.take) || undefined,
+      skip: Number(parametrosBusqueda.skip) || undefined,
+    });
+  }
 
   buscarUno(id: number) {
     return this.prisma.ePN_USUARIO.findUnique({
